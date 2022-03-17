@@ -2,15 +2,14 @@
 #include <vector>
 using namespace std;
 
-const vector<int> INPUT = {1,1,1,1,-2,1,4};
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 1D
 // LET i be the beginning of the maximum contiguous subarray
 // LET j be the end of the maximum contiguous subarray
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
-vector<int> bruteForce(vector<int> input){
+vector<long  int> bruteForce(vector<int> input){
     int sum;
-    int maxSum=0;
+    int maxSum=input[0];
     int start=0;
     int end=0;
     for(int i=0; i<input.size(); i++){
@@ -26,7 +25,11 @@ vector<int> bruteForce(vector<int> input){
             }
         }
     }
-    return vector<int>(input.begin() + start, input.begin()+end+1);
+    vector<long int> res;
+    res.push_back(start);
+    res.push_back(end);
+    res.push_back(maxSum);
+    return res;
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (square)
@@ -47,10 +50,28 @@ vector<vector<int>> betterMaxSubRect(vector<vector<int>> input){}
 
 
 int main() {
-    std::cout << "Welcome to Mars" << std::endl;
-    auto res = bruteForce(INPUT);
-    for(auto r:res){
-        cout<<r<<" ";
-    }
+    // PROGRAM1 INTERFACE
+//    int size;
+//    int num;
+//    cout << "Welcome to Mars" << std::endl;
+//    cout<<"Enter size of array: ";
+//    cin>>size;
+//    vector<int> input(size, 0);
+//    int i=0;
+//    while(i<size){
+//        cin>>num;
+//        input[i]=num;
+//        i++;
+//    }
+//    for(auto r: input){
+//        cout<<r<<" ";
+//    }
+
+    //TEST CASE 1 -- BRUTE FORCE 1D
+    const vector<int> INPUT1 = {-1,-1, -1, -1, -1};
+    auto res = bruteForce(INPUT1);
+    assert(res[0]==0);
+    assert(res[1]==0);
+    assert(res[2]==-1);
     return 0;
 }
