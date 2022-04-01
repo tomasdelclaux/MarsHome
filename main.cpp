@@ -70,7 +70,38 @@ vector<int> betterMaxContSubArr(vector<int> input){}
 
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
-vector<vector<int>> bruteForce(vector<vector<int>> input){}
+vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
+    int m_sum = input[0][0];
+    int x1,y1,x2,y2;
+    vector<int> output;
+    for (int i = 0; i < m; i++){
+        for(int j = 0; j < n; j++){
+            for(int x = 0; x <= i; x++){
+                for(int y = 0; y <= j; y++){
+                    int sum_ = 0;
+                    for(int si = x; si <= i; si++){
+                        for(int sj = y; sj <= j; sj++){
+                            sum_ = sum_ + input[si][sj];
+                        }
+                    }
+                    if(sum_ > m_sum){
+                        m_sum = sum_;
+                        x1 = x;
+                        y1 = y;
+                        x2 = i;
+                        y2 = j;
+                    }
+                }
+            }
+        }
+    }
+    output.push_back(x1);
+    output.push_back(y1);
+    output.push_back(x2);
+    output.push_back(y2);
+    output.push_back(m_sum);
+    return output;
+}
 
 // TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
 vector<vector<int>> maxSubRect(vector<vector<int>> input){}
@@ -97,19 +128,25 @@ int main() {
 //        cout<<r<<" ";
 //    }
 
-    //TEST CASE 1 -- BRUTE FORCE 1D
-    const vector<int> INPUT1 = {-1,-1, -1, -1, -1};
-    auto res1 = bruteForce(INPUT1);
-    assert(res1[0]==0);
-    assert(res1[1]==0);
-    assert(res1[2]==-1);
+//    //TEST CASE 1 -- BRUTE FORCE 1D
+//    const vector<int> INPUT1 = {-1,-1, -1, -1, -1};
+//    auto res1 = bruteForce(INPUT1);
+//    assert(res1[0]==0);
+//    assert(res1[1]==0);
+//    assert(res1[2]==-1);
+//
+//    //TEST CASE 2 -- DP
+//    const vector<int> INPUT2 = {7,80, -100, 25, -2};
+//    const vector<int> INPUT3 = {1,2,3,-1,5,7,-10};
+//    int res2 = maxContSubArr(INPUT2);
+//    assert(res2==87);
+//    res2= maxContSubArr(INPUT3);
+//    assert(res2==17);
+//    return 0;
 
-    //TEST CASE 2 -- DP
-    const vector<int> INPUT2 = {7,80, -100, 25, -2};
-    const vector<int> INPUT3 = {1,2,3,-1,5,7,-10};
-    int res2 = maxContSubArr(INPUT2);
-    assert(res2==87);
-    res2= maxContSubArr(INPUT3);
-    assert(res2==17);
-    return 0;
+    const vector<vector<int>> INPUT4 = {{-1,-1,-1,-1},{-1,-1,-1,-1},{1,2,3,4},{4,3,2,1}};
+    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
+    vector<int> output = bruteForce2D(INPUT5,4,4);
+    cout << output[0];
+    cout << output[4];
 }
