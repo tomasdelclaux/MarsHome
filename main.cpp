@@ -86,10 +86,10 @@ vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
                     }
                     if(sum_ > m_sum){
                         m_sum = sum_;
-                        x1 = x;
-                        y1 = y;
-                        x2 = i;
-                        y2 = j;
+                        x1 = x + 1;
+                        y1 = y + 1;
+                        x2 = i + 1;
+                        y2 = j + 1;
                     }
                 }
             }
@@ -144,9 +144,9 @@ int main() {
 //    assert(res2==17);
 //    return 0;
 
-    const vector<vector<int>> INPUT4 = {{-1,-1,-1,-1},{-1,-1,-1,-1},{1,2,3,4},{4,3,2,1}};
+    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
     const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
-    vector<int> output = bruteForce2D(INPUT5,4,4);
-    cout << output[0];
-    cout << output[4];
+    vector<int> output = bruteForce2D(INPUT4,4,4);
+//    cout << output[0];
+    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
 }
