@@ -65,13 +65,42 @@ int maxContSubArr(vector<int> input){
     return curr_max;
 }
 
-// TODO DP CONTIGUOUS SUBARRAY 1D (linear)
+
+// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part A
 vector<int> betterMaxContSubArr(vector<int> input){}
+
+// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part B
+vector<int> betterMaxContSubArr_B(vector<int> input){
+    int m_sum = INT_MIN;
+    int sum_ = 0;
+    int s = 0;
+    int l,r;
+    vector<int> output;
+    for (int i = 0; i < input.size(); i++){
+        sum_ = sum_ + input[i];
+
+        if (m_sum < sum_){
+            m_sum = sum_;
+            l = s;
+            r = i;
+        }
+
+        if (sum_ < 0){
+            sum_ = 0;
+            s = i + 1;
+        }
+
+    }
+    output.push_back(l+1);
+    output.push_back(r+1);
+    output.push_back(m_sum);
+    return output;
+}
 
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
 vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
-    int m_sum = input[0][0];
+    int m_sum = INT_MIN;
     int x1,y1,x2,y2;
     vector<int> output;
     for (int i = 0; i < m; i++){
@@ -144,9 +173,16 @@ int main() {
 //    assert(res2==17);
 //    return 0;
 
-    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
-    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
-    vector<int> output = bruteForce2D(INPUT4,4,4);
-//    cout << output[0];
-    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
+// PROBLEM 3B
+    const vector<int> INPUT6 = {-99,-38,-81,-29,-91,-3,-36,-46};
+    vector<int> output = betterMaxContSubArr_B(INPUT6);
+    cout << output[0] << " " << output[1] << " " << output[2];
+
+
+// PROBLEM 4
+//    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
+//    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
+//    vector<int> output = bruteForce2D(INPUT4,4,4);
+////    cout << output[0];
+//    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
 }
