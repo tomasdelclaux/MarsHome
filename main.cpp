@@ -12,7 +12,7 @@ using namespace std;
 // LET i be the beginning of the maximum contiguous subarray
 // LET j be the end of the maximum contiguous subarray
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
-vector<long  int> bruteForce(vector<int> input){
+vector<long  int> bruteForce(const vector<int> input){
     int sum;
     int maxSum=input[0];
     int start=0;
@@ -23,7 +23,7 @@ vector<long  int> bruteForce(vector<int> input){
             for(int z=i; z<=j; z++){
                 sum+= input[z];
             }
-            if(sum > maxSum){
+            if(sum >= maxSum){
                 maxSum = sum;
                 start = i;
                 end = j;
@@ -31,14 +31,15 @@ vector<long  int> bruteForce(vector<int> input){
         }
     }
     vector<long int> res;
-    res.push_back(start);
-    res.push_back(end);
+    res.push_back(start+1);
+    res.push_back(end+1);
     res.push_back(maxSum);
     return res;
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (square)
-int maxContSubArr(vector<int> input){
+vector<long int> maxContSubArr(const vector<int> input){
+    vector<long int> output;
     vector<vector<int>> map;
     for(int i=0; i<input.size(); i++){
         vector<int> v;
@@ -51,49 +52,102 @@ int maxContSubArr(vector<int> input){
         map[i][i]=input[i];
     }
     int curr_max = input[0];
-    int start, end;
+    int start=0;
+    int end=0;
     for(int l=1; l<input.size(); l++){
         for(int j=0; j<=l; j++) {
             map[j][l] = max(map[j][l - 1] + input[l], input[l]);
-            if(map[j][l]>curr_max){
-                start = j;
+            if(map[j][l]>=curr_max){
                 end = l;
+                start = j;
                 curr_max=map[j][l];
             }
         }
     }
-    return curr_max;
+    output.push_back(start+1);
+    output.push_back(end+1);
+    output.push_back(curr_max);
+    return output;
 }
 
 
-// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part A
-vector<int> betterMaxContSubArr(vector<int> input){}
-
-// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part B
-vector<int> betterMaxContSubArr_B(vector<int> input){
-    int m_sum = INT_MIN;
-    int sum_ = 0;
-    int s = 0;
-    int l,r;
-    vector<int> output;
-    for (int i = 0; i < input.size(); i++){
-        sum_ = sum_ + input[i];
-
-        if (m_sum < sum_){
-            m_sum = sum_;
-            l = s;
-            r = i;
-        }
-
-        if (sum_ < 0){
-            sum_ = 0;
-            s = i + 1;
-        }
-
+// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part A TOD DOWN
+int betterMaxContSubArr_A(const vector<int> input, int end, vector<int> &mem){
+    if(end==0){
+        return input[0];
     }
-    output.push_back(l+1);
-    output.push_back(r+1);
-    output.push_back(m_sum);
+    if(mem[end]>INT_MIN){
+        return mem[end];
+    }
+    else{
+        mem[end]= max(input[end], betterMaxContSubArr_A(input, end-1, mem)+input[end]);
+        return mem[end];
+    }
+}
+
+//TODO DP CONTIGUOUS SUBARRAY 1D(linear) Part A driver
+vector<long int> betterMaxContSubArr_A(const vector<int> input){
+    vector<int> mem;
+    vector<long int> output;
+    int end, start, backTrack;
+    int max_sum = INT_MIN;
+    for(int i=0; i<input.size(); i++){
+        mem.push_back(INT_MIN);
+    }
+    mem[0]= input[0];
+    auto dummy = betterMaxContSubArr_A(input, input.size()-1, mem);
+    for(int i=0; i<mem.size(); i++){
+        if(mem[i]>=max_sum){
+            end = i;
+            max_sum=mem[i];
+        }
+    }
+    backTrack = max_sum;
+    start = end;
+    while(true){
+        backTrack-=input[start];
+        if(backTrack==0){
+            break;
+        }
+        start--;
+    }
+    output.push_back(start+1);
+    output.push_back(end+1);
+    output.push_back(max_sum);
+    return output;
+}
+
+//BOTTOM UP APPROACH
+vector<long int> betterMaxContSubArr_B(const vector<int> input){
+    vector<int> sums;
+    vector<long int> output;
+    int start, end, backTrack;
+    int max_sum = INT_MIN;
+    for(int i=0; i<input.size(); i++){
+        sums.push_back(0);
+    }
+    sums[0]=input[0];
+    for(int i=1; i<input.size(); i++){
+        sums[i] = max(sums[i-1]+input[i], input[i]);
+    }
+    for(int i=0; i<input.size(); i++){
+        if(sums[i]>=max_sum){
+            end = i;
+            max_sum =sums[i];
+        }
+    }
+    backTrack = max_sum;
+    start = end;
+    while(true){
+        backTrack-=input[start];
+        if(backTrack==0){
+            break;
+        }
+        start--;
+    }
+    output.push_back(start+1);
+    output.push_back(end+1);
+    output.push_back(max_sum);
     return output;
 }
 
@@ -164,25 +218,109 @@ int main() {
 //    assert(res1[1]==0);
 //    assert(res1[2]==-1);
 //
-//    //TEST CASE 2 -- DP
-//    const vector<int> INPUT2 = {7,80, -100, 25, -2};
-//    const vector<int> INPUT3 = {1,2,3,-1,5,7,-10};
-//    int res2 = maxContSubArr(INPUT2);
-//    assert(res2==87);
-//    res2= maxContSubArr(INPUT3);
-//    assert(res2==17);
-//    return 0;
 
-// PROBLEM 3B
-    const vector<int> INPUT6 = {-99,-38,-81,-29,-91,-3,-36,-46};
-    vector<int> output = betterMaxContSubArr_B(INPUT6);
-    cout << output[0] << " " << output[1] << " " << output[2];
+//PROBLEM 1
+    const vector<int> INPUT1 = {-1,-1, -1, -1, -1};
+    const vector<int> INPUT2 = {19,25,23,-19,24,-9,-31,-22};
+    const vector<int> INPUT3 = {7,80,-100, 25,-2};
+    const vector<int> INPUT4 = {1,2,3,-1,5,7,-10};
+    const vector<int> INPUT5 = {-99,-38,-81,-29,-91,-3,-36,-46};
+
+//TASK 1
+    auto output_1 = bruteForce(INPUT1);
+    auto output_2 = bruteForce(INPUT2);
+    auto output_3 = bruteForce(INPUT3);
+    auto output_4 = bruteForce(INPUT4);
+    auto output_5 = bruteForce(INPUT5);
+    assert(output_1[0]==5);
+    assert(output_1[1]==5);
+    assert(output_1[2]==-1);
+    assert(output_2[0]==1);
+    assert(output_2[1]==5);
+    assert(output_2[2]==72);
+    assert(output_3[0]==1);
+    assert(output_3[1]==2);
+    assert(output_3[2]==87);
+    assert(output_4[0]==1);
+    assert(output_4[1]==6);
+    assert(output_4[2]==17);
+    assert(output_5[0]==6);
+    assert(output_5[1]==6);
+    assert(output_5[2]==-3);
 
 
-// PROBLEM 4
+//TASK 2
+    output_1 = maxContSubArr(INPUT1);
+    output_2 = maxContSubArr(INPUT2);
+    output_3 = maxContSubArr(INPUT3);
+    output_4 = maxContSubArr(INPUT4);
+    output_5 = maxContSubArr(INPUT5);
+    assert(output_1[0]==5);
+    assert(output_1[1]==5);
+    assert(output_1[2]==-1);
+    assert(output_2[0]==1);
+    assert(output_2[1]==5);
+    assert(output_2[2]==72);
+    assert(output_3[0]==1);
+    assert(output_3[1]==2);
+    assert(output_3[2]==87);
+    assert(output_4[0]==1);
+    assert(output_4[1]==6);
+    assert(output_4[2]==17);
+    assert(output_5[0]==6);
+    assert(output_5[1]==6);
+    assert(output_5[2]==-3);
+
+//TASK 3A
+    output_1 = betterMaxContSubArr_A(INPUT1);
+    output_2 = betterMaxContSubArr_A(INPUT2);
+    output_3 = betterMaxContSubArr_A(INPUT3);
+    output_4 = betterMaxContSubArr_A(INPUT4);
+    output_5 = betterMaxContSubArr_A(INPUT5);
+    assert(output_1[0]==5);
+    assert(output_1[1]==5);
+    assert(output_1[2]==-1);
+    assert(output_2[0]==1);
+    assert(output_2[1]==5);
+    assert(output_2[2]==72);
+    assert(output_3[0]==1);
+    assert(output_3[1]==2);
+    assert(output_3[2]==87);
+    assert(output_4[0]==1);
+    assert(output_4[1]==6);
+    assert(output_4[2]==17);
+    assert(output_5[0]==6);
+    assert(output_5[1]==6);
+    assert(output_5[2]==-3);
+
+//TASK 3B
+    output_1 = betterMaxContSubArr_B(INPUT1);
+    output_2 = betterMaxContSubArr_B(INPUT2);
+    output_3 = betterMaxContSubArr_B(INPUT3);
+    output_4 = betterMaxContSubArr_B(INPUT4);
+    output_5 = betterMaxContSubArr_B(INPUT5);
+    assert(output_1[0]==5);
+    assert(output_1[1]==5);
+    assert(output_1[2]==-1);
+    assert(output_2[0]==1);
+    assert(output_2[1]==5);
+    assert(output_2[2]==72);
+    assert(output_3[0]==1);
+    assert(output_3[1]==2);
+    assert(output_3[2]==87);
+    assert(output_4[0]==1);
+    assert(output_4[1]==6);
+    assert(output_4[2]==17);
+    assert(output_5[0]==6);
+    assert(output_5[1]==6);
+    assert(output_5[2]==-3);
+
+
+// TASK 4
 //    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
 //    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
 //    vector<int> output = bruteForce2D(INPUT4,4,4);
-////    cout << output[0];
+//    assert(out)
 //    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
+
 }
