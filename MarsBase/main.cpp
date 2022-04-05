@@ -410,28 +410,135 @@ void experiment(Algo algo){
 }
 
 int main(int argc, char** argv) {
-    // PROGRAM1 INTERFACE
-    if(argv[0]=="1"){
-        cout<<"run 1"<<endl;
+    // PROGRAM INTERFACE
+    if(string(argv[1])=="1"){
+        cout<<"run Task 1"<<endl;
+        int size;
+        int num;
+        cout<<"Enter size of array: ";
+        cin>>size;
+        vector<int> input(size, 0);
+        int i=0;
+        while(i<size){
+            cin>>num;
+            input[i]=num;
+            i++;
+        }
+        vector<long int> output = bruteForce(input);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<endl;
     }
-    else if(argv[0]=="2"){
-        cout<<"run 2"<<endl;
+    else if(string(argv[1])=="2"){
+        cout<<"run Task 2"<<endl;
+        int size;
+        int num;
+        cout<<"Enter size of array: ";
+        cin>>size;
+        vector<int> input(size, 0);
+        int i=0;
+        while(i<size){
+            cin>>num;
+            input[i]=num;
+            i++;
+        }
+        vector<long int> output = maxContSubArr(input);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<endl;
     }
-//    int size;
-//    int num;
-//    cout << "Welcome to Mars" << std::endl;
-//    cout<<"Enter size of array: ";
-//    cin>>size;
-//    vector<int> input(size, 0);
-//    int i=0;
-//    while(i<size){
-//        cin>>num;
-//        input[i]=num;
-//        i++;
-//    }
-//    for(auto r: input){
-//        cout<<r<<" ";
+    else if(string(argv[1])=="3a"){
+        cout<<"run Task 3a"<<endl;
+        int size;
+        int num;
+        cout<<"Enter size of array: ";
+        cin>>size;
+        vector<int> input(size, 0);
+        int i=0;
+        while(i<size){
+            cin>>num;
+            input[i]=num;
+            i++;
+        }
+        vector<long int> output = betterMaxContSubArr_A(input);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<endl;
     }
+    else if(string(argv[1])=="3b"){
+        cout<<"run Task 3b"<<endl;
+        int size;
+        int num;
+        cout<<"Enter size of array: ";
+        cin>>size;
+        vector<int> input(size, 0);
+        int i=0;
+        while(i<size){
+            cin>>num;
+            input[i]=num;
+            i++;
+        }
+        vector<long int> output = betterMaxContSubArr_B(input);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<endl;
+    }
+    else if(string(argv[1])=="4"){
+        cout<<"run Task 4"<<endl;
+        int m, n;
+        int num;
+        cout<<"Enter dimensions of 2D array: ";
+        cin>>m;
+        cin>>n;
+        vector<int> row(n, 0);
+        vector<vector<int>>input;
+        for(int i=0; i<m; i++){
+            int j=0;
+            while(j<n){
+                cin>>num;
+                row[j]=num;
+                j++;
+            }
+            input.push_back(row);
+        }
+        vector<long int> output = bruteForce2D(input, m,n);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3]<<" "<<output[4]<<" "<<endl;
+    }
+    else if(string(argv[1])=="5"){
+        cout<<"run Task 5"<<endl;
+        int m, n;
+        int num;
+        cout<<"Enter dimensions of 2D array: ";
+        cin>>m;
+        cin>>n;
+        vector<int> row(n, 0);
+        vector<vector<int>>input;
+        for(int i=0; i<m; i++){
+            int j=0;
+            while(j<n){
+                cin>>num;
+                row[j]=num;
+                j++;
+            }
+            input.push_back(row);
+        }
+        vector<long int> output = maxSubRect(input, m,n);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3]<<" "<<output[4]<<" "<<endl;
+    }
+    else if(string(argv[1])=="6"){
+        cout<<"run Task 6"<<endl;
+        int m, n;
+        int num;
+        cout<<"Enter dimensions of 2D array: ";
+        cin>>m;
+        cin>>n;
+        vector<int> row(n, 0);
+        vector<vector<int>>input;
+        for(int i=0; i<m; i++){
+            int j=0;
+            while(j<n){
+                cin>>num;
+                row[j]=num;
+                j++;
+            }
+            input.push_back(row);
+        }
+        vector<long int> output = betterMaxSubRect(input, m,n);
+        cout<<output[0]<<" "<<output[1]<<" "<<output[2]<<" "<<output[3]<<" "<<output[4]<<" "<<endl;
+    }
+}
 
 
 ////PROBLEM 1
