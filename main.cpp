@@ -118,9 +118,9 @@ vector<long int> betterMaxContSubArr_A(const vector<int> input){
 }
 
 //BOTTOM UP APPROACH
-vector<long int> betterMaxContSubArr_B(const vector<int> input){
+vector<int> betterMaxContSubArr_B(const vector<int> input){
     vector<int> sums;
-    vector<long int> output;
+    vector<int> output;
     int start, end, backTrack;
     int max_sum = INT_MIN;
     for(int i=0; i<input.size(); i++){
