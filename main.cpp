@@ -118,9 +118,9 @@ vector<long int> betterMaxContSubArr_A(const vector<int> input){
 }
 
 //BOTTOM UP APPROACH
-vector<int> betterMaxContSubArr_B(const vector<int> input){
+vector<long int> betterMaxContSubArr_B(const vector<int> input){
     vector<int> sums;
-    vector<int> output;
+    vector<long int> output;
     int start, end, backTrack;
     int max_sum = INT_MIN;
     for(int i=0; i<input.size(); i++){
@@ -153,11 +153,7 @@ vector<int> betterMaxContSubArr_B(const vector<int> input){
 
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
-<<<<<<< HEAD
 vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
-=======
-vector<int> bruteForce2D(int m, int n,vector<vector<int>> input){
->>>>>>> b40e50c4ec8e34f6331fe2ae9086ca96d2b1e7c4
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
     vector<long int> output;
@@ -191,7 +187,6 @@ vector<int> bruteForce2D(int m, int n,vector<vector<int>> input){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
-<<<<<<< HEAD
 vector<long int> maxSubRect(vector<vector<int>> input){
     int max_sum = INT_MIN;
     int sum;
@@ -239,9 +234,7 @@ vector<long int> maxSubRect(vector<vector<int>> input){
     output.push_back(max_sum);
     return output;
 }
-=======
 vector<int> maxSubRect(int m, int n,vector<vector<int>> input){}
->>>>>>> b40e50c4ec8e34f6331fe2ae9086ca96d2b1e7c4
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
 vector<int> betterMaxSubRect(int m, int n,vector<vector<int>> input){}
