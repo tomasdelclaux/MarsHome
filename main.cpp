@@ -5,8 +5,11 @@
 #include <cstdlib>
 #include <cmath>
 #include <cassert>
+#include <chrono>
+#include <fstream>
 using namespace std;
 
+enum Algo { task1, task2, task3_a, task3_b, task4, task5, task6};
 
 // BRUTE FORCE CONTIGUOUS SUBARRAY 1D
 // LET i be the beginning of the maximum contiguous subarray
@@ -265,6 +268,33 @@ vector<long int> betterMaxSubRect(vector<vector<int>> input, int m, int n){
 }
 
 
+void experiment(Algo algo){
+    auto start = chrono::high_resolution_clock::now();
+    ofstream outfile;
+    switch(algo){
+        case task1:
+            //TODO
+            outfile.open("../task1.csv", ios_base::app);
+            break;
+        case task2:
+            //TODO
+            break;
+        case task3_a:
+            //TODO
+            break;
+        case task3_b:
+            break;
+        case task5:
+            break;
+        case task6:
+            break;
+    }
+    auto stop = chrono::high_resolution_clock::now();
+    auto duration = duration_cast<chrono::microseconds>(stop - start);
+    outfile<<1<<','<<duration.count()<<endl;
+    outfile.close();
+}
+
 int main() {
     // PROGRAM1 INTERFACE
 //    int size;
@@ -490,4 +520,6 @@ int main() {
     assert(output_9[2]==5);
     assert(output_9[3]==3);
     assert(output_9[4]==126);
+
+    experiment(task1);
 }
