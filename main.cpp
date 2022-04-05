@@ -8,7 +8,7 @@
 using namespace std;
 
 
-// TODO BRUTE FORCE CONTIGUOUS SUBARRAY 1D
+// BRUTE FORCE CONTIGUOUS SUBARRAY 1D
 // LET i be the beginning of the maximum contiguous subarray
 // LET j be the end of the maximum contiguous subarray
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
@@ -37,7 +37,7 @@ vector<long  int> bruteForce(const vector<int> input){
     return res;
 }
 
-// TODO DP CONTIGUOUS SUBARRAY 1D (square)
+// DP CONTIGUOUS SUBARRAY 1D (square)
 vector<long int> maxContSubArr(const vector<int> input){
     vector<long int> output;
     vector<vector<int>> map;
@@ -71,7 +71,7 @@ vector<long int> maxContSubArr(const vector<int> input){
 }
 
 
-// TODO DP CONTIGUOUS SUBARRAY 1D (linear) Part A TOD DOWN
+// Part A TOD DOWN
 int betterMaxContSubArr_A(const vector<int> input, int end, vector<int> &mem){
     if(end==0){
         return input[0];
@@ -85,7 +85,7 @@ int betterMaxContSubArr_A(const vector<int> input, int end, vector<int> &mem){
     }
 }
 
-//TODO DP CONTIGUOUS SUBARRAY 1D(linear) Part A driver
+//Part A driver
 vector<long int> betterMaxContSubArr_A(const vector<int> input){
     vector<int> mem;
     vector<long int> output;
@@ -152,7 +152,6 @@ vector<long int> betterMaxContSubArr_B(const vector<int> input){
 }
 
 
-// TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
 vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
@@ -186,7 +185,6 @@ vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
     return output;
 }
 
-// TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
 vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
     int max_sum = INT_MIN;
     int sum;
@@ -219,6 +217,7 @@ vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
             }
         }
     }
+
     output.push_back(x1);
     output.push_back(y1);
     output.push_back(x2);
@@ -228,7 +227,42 @@ vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
-vector<int> betterMaxSubRect(int m, int n,vector<vector<int>> input){}
+vector<long int> betterMaxSubRect(vector<vector<int>> input, int m, int n){
+    int max_sum = INT_MIN;
+    vector<long int> output;
+    vector<int> rowSums;
+    int x1,y1,x2,y2;
+    for(int i=0; i<m; i++){
+        rowSums.push_back(0);
+    }
+    for(int cs=0; cs<n; cs++){
+        for(int i=0; i<m; i++){
+            rowSums[i]=0;
+        }
+        for(int ce=cs; ce<n; ce++){
+            for(int i=0; i<m; i++){
+                rowSums[i]=rowSums[i]+input[i][ce];
+            }
+
+            auto output = betterMaxContSubArr_B(rowSums);
+
+            if(output[2]>max_sum){
+                max_sum=output[2];
+                x1=output[0];
+                x2=output[1];
+                y1=cs;
+                y2=ce;
+            }
+        }
+    }
+
+    output.push_back(x1);
+    output.push_back(y1+1);
+    output.push_back(x2);
+    output.push_back(y2+1);
+    output.push_back(max_sum);
+    return output;
+}
 
 
 int main() {
@@ -358,12 +392,14 @@ int main() {
     const vector<vector<int>> INPUT6 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
     const vector<vector<int>> INPUT7 = {{0,5,-11,-61},{-41,-88,-24,-65},{53,-18,29,-37},{-38,52,0,5}};
     const vector<vector<int>> INPUT8 = {{-1,-1,-1,-1},{0,0,0,0},{-1,-1,-1,-1},{0,0,0,0}};
+    const vector<vector<int>> INPUT9 = {{0,5,-11,-61},{-41,-88,-24,-65},{53,-18,29,-37},{-38,52,0,5}, {50,-2,0,7}};
 
 
 //TASK4
     auto output_6 = bruteForce2D(INPUT6,4,4);
     auto output_7 = bruteForce2D(INPUT7,4,4);
     auto output_8 = bruteForce2D(INPUT8,4,4);
+    auto output_9 = bruteForce2D(INPUT9,5,4);
     assert(output_6[0]==1);
     assert(output_6[1]==1);
     assert(output_6[2]==3);
@@ -374,18 +410,31 @@ int main() {
     assert(output_7[2]==4);
     assert(output_7[3]==3);
     assert(output_7[4]==78);
+//    for(auto v: output_8){
+//        cout<<v<<" ";
+//    }
+//    cout<<endl;
     assert(output_8[0]==2);
     assert(output_8[1]==1);
     assert(output_8[2]==2);
     assert(output_8[3]==1);
     assert(output_8[4]==0);
+//    for(auto v: output_9){
+//        cout<<v<<" ";
+//    }
+//    cout<<endl;
+    assert(output_9[0]==3);
+    assert(output_9[1]==1);
+    assert(output_9[2]==5);
+    assert(output_9[3]==3);
+    assert(output_9[4]==126);
 
 
 ////TASK5
     output_6 = maxSubRect(INPUT6,4,4);
     output_7 = maxSubRect(INPUT7,4,4);
     output_8 = maxSubRect(INPUT8,4,4);
-    cout<<output_6[0]<<endl;
+    output_9 = maxSubRect(INPUT9,5,4);
     assert(output_6[0]==1);
     assert(output_6[1]==1);
     assert(output_6[2]==3);
@@ -396,30 +445,49 @@ int main() {
     assert(output_7[2]==4);
     assert(output_7[3]==3);
     assert(output_7[4]==78);
+//    for(auto v: output_8){
+//        cout<<v<<" ";
+//    }
+//    cout<<endl;
     assert(output_8[0]==2);
     assert(output_8[1]==1);
     assert(output_8[2]==2);
     assert(output_8[3]==1);
     assert(output_8[4]==0);
+    assert(output_9[0]==3);
+    assert(output_9[1]==1);
+    assert(output_9[2]==5);
+    assert(output_9[3]==3);
+    assert(output_9[4]==126);
 //
 //
 ////TASK6
-//    output_6 = betterMaxSubRect(4,4,INPUT6);
-//    output_7 = betterMaxSubRect(4,4,INPUT7);
-//    output_8 = betterMaxSubRect(4,4,INPUT8);
-//    assert(output_6[0]==1);
-//    assert(output_6[1]==1);
-//    assert(output_6[2]==3);
-//    assert(output_6[3]==1);
-//    assert(output_6[4]==47);
-//    assert(output_7[0]==3);
-//    assert(output_7[1]==1);
-//    assert(output_7[2]==4);
-//    assert(output_7[3]==3);
-//    assert(output_7[4]==78);
-//    assert(output_8[0]==2);
-//    assert(output_8[1]==1);
-//    assert(output_8[2]==2);
-//    assert(output_8[3]==1);
-//    assert(output_8[4]==0);
+    output_6 = betterMaxSubRect(INPUT6,4,4);
+    output_7 = betterMaxSubRect(INPUT7,4,4);
+    output_8 = betterMaxSubRect(INPUT8,4,4);
+    output_9 = betterMaxSubRect(INPUT9,5,4);
+    assert(output_6[0]==1);
+    assert(output_6[1]==1);
+    assert(output_6[2]==3);
+    assert(output_6[3]==1);
+    assert(output_6[4]==47);
+    assert(output_7[0]==3);
+    assert(output_7[1]==1);
+    assert(output_7[2]==4);
+    assert(output_7[3]==3);
+    assert(output_7[4]==78);
+//    for(auto v: output_8){
+//        cout<<v<<" ";
+//    }
+//    cout<<endl;
+    assert(output_8[0]==4);
+    assert(output_8[1]==1);
+    assert(output_8[2]==4);
+    assert(output_8[3]==1);
+    assert(output_8[4]==0);
+    assert(output_9[0]==3);
+    assert(output_9[1]==1);
+    assert(output_9[2]==5);
+    assert(output_9[3]==3);
+    assert(output_9[4]==126);
 }
