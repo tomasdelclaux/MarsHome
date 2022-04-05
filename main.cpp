@@ -15,7 +15,7 @@ enum Algo { task1, task2, task3_a, task3_b, task4, task5, task6};
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
 vector<long  int> bruteForce(const vector<int> &input){
     int sum;
-    int maxSum=input[0];
+    int maxSum=INT_MIN;
     int start=0;
     int end=0;
     for(int i=0; i<input.size(); i++){
@@ -230,7 +230,7 @@ vector<long int> maxSubRect(const vector<vector<int>> &input, int m, int n){
     return output;
 }
 
-// TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
+// TODO DP CONTIGUOUS SUBARRAY 2D (pow 3)
 vector<long int> betterMaxSubRect(const vector<vector<int>> &input, int m, int n){
     int max_sum = INT_MIN;
     vector<long int> output;
@@ -280,7 +280,7 @@ void experiment(Algo algo){
     switch(algo){
         case task1:
             outfile.open("../task1.csv");
-            for(int size=100; size<=10000; size=size+100){
+            for(int size=500; size<=10000; size=size+500){
                 cout<<size<<endl;
                 vector<int> testInput;
                 testInput.reserve(size);
@@ -314,7 +314,7 @@ void experiment(Algo algo){
             break;
         case task3_a:
             outfile.open("../task3a.csv");
-            for(int size=100; size<=10000; size=size+100){
+            for(int size=500; size<=10000; size=size+500){
                 cout<<size<<endl;
                 vector<int> testInput;
                 testInput.reserve(size);
@@ -336,7 +336,7 @@ void experiment(Algo algo){
                 vector<int> testInput;
                 testInput.reserve(size);
                 for(int i=0; i<size; i++){
-                    testInput[i]=distr(gen);
+                    testInput.push_back(distr(gen));
                 }
                 auto start = chrono::high_resolution_clock::now();
                 auto output = betterMaxContSubArr_A(testInput);
@@ -348,9 +348,9 @@ void experiment(Algo algo){
             break;
         case task4:
             outfile.open("../task4.csv");
-            for(int m=10; m<=500; m=m+10){
+            for(int m=10; m<=100; m=m+10){
                 cout<<m<<endl;
-                for(int n=10; n<=500; n=n+10){
+                for(int n=10; n<=100; n=n+10){
                     vector<vector<int>> testInput(m,vector<int>(n,0));
                     for(int i=0; i<m; i++){
                         for(int j=0; j<n; j++){
@@ -364,10 +364,47 @@ void experiment(Algo algo){
                     outfile<<m*n<<','<<duration.count()<<endl;
                 }
             }
+            outfile.close();
             break;
         case task5:
+            outfile.open("../task5.csv");
+            for(int m=10; m<=100; m=m+10){
+                cout<<m<<endl;
+                for(int n=10; n<=100; n=n+10){
+                    vector<vector<int>> testInput(m,vector<int>(n,0));
+                    for(int i=0; i<m; i++){
+                        for(int j=0; j<n; j++){
+                            testInput[i][j]=distr(gen);
+                        }
+                    }
+                    auto start = chrono::high_resolution_clock::now();
+                    auto output = maxSubRect(testInput,m,n);
+                    auto stop = chrono::high_resolution_clock::now();
+                    auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                    outfile<<m*n<<','<<duration.count()<<endl;
+                }
+            }
+            outfile.close();
             break;
         case task6:
+            outfile.open("../task6.csv");
+            for(int m=10; m<=100; m=m+10){
+                cout<<m<<endl;
+                for(int n=10; n<=100; n=n+10){
+                    vector<vector<int>> testInput(m,vector<int>(n,0));
+                    for(int i=0; i<m; i++){
+                        for(int j=0; j<n; j++){
+                            testInput[i][j]=distr(gen);
+                        }
+                    }
+                    auto start = chrono::high_resolution_clock::now();
+                    auto output = betterMaxSubRect(testInput,m,n);
+                    auto stop = chrono::high_resolution_clock::now();
+                    auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                    outfile<<m*n<<','<<duration.count()<<endl;
+                }
+            }
+            outfile.close();
             break;
     }
 }
@@ -598,5 +635,5 @@ int main() {
     assert(output_9[3]==3);
     assert(output_9[4]==126);
 
-    experiment(task1);
+    experiment(task6);
 }
