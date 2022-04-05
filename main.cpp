@@ -187,41 +187,33 @@ vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
-vector<long int> maxSubRect(vector<vector<int>> input){
+vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
     int max_sum = INT_MIN;
     int sum;
-    int m = input.size();
-    int n = input[0].size();
     int x1,y1,x2,y2;
     vector<long int> output;
-    vector<vector<int>> map;
     //INITIALIZE A VECTOR WITH ZEROES FROM 0-M and 0-N
-    for(int i=0; i<=m; i++){
-        vector<int> v;
-        for(int j=0; j<=n; j++){
-            v.push_back(0);
-        }
-        map.push_back(v);
-    }
+    vector<vector<int>> map(m+1,vector<int>(n+1,0));
+
     //CALCULATE THE MAX SUMS OF ALL ELEMENTS ENDING IN ROW I AND COLUMN J
     for(int i=1; i<=m; i++){
         for(int j=1; j<=n; j++){
-            map[i][j]=map[i-1][j]+map[i][j-1]-map[i-1][j-1]+input[i][j];
+            map[i][j]=map[i-1][j]+map[i][j-1]-map[i-1][j-1]+input[i-1][j-1];
         }
     }
 
-    for(int rs=0; rs<=m; rs++){
-        for(int re=rs; rs<=m; re++){
-            for(int cs=0; cs<=n; cs++){
-                for(int ce=cs; cs<=n; ce++){
+    for(int rs=1; rs<=m; rs++){
+        for(int re=rs; re<=m; re++){
+            for(int cs=1; cs<=n; cs++){
+                for(int ce=cs; ce<=n; ce++){
                     sum = map[re][ce]-map[rs-1][ce]-map[re][cs-1]+map[rs-1][cs-1];
 
                     if(sum>max_sum){
                         max_sum= sum;
-                        x1 = rs + 1;
-                        y1 = cs + 1;
-                        x2 = re + 1;
-                        y2 = ce + 1;
+                        x1 = rs;
+                        y1 = cs;
+                        x2 = re;
+                        y2 = ce;
                     }
                 }
             }
@@ -234,7 +226,6 @@ vector<long int> maxSubRect(vector<vector<int>> input){
     output.push_back(max_sum);
     return output;
 }
-vector<int> maxSubRect(int m, int n,vector<vector<int>> input){}
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
 vector<int> betterMaxSubRect(int m, int n,vector<vector<int>> input){}
@@ -365,23 +356,14 @@ int main() {
 
 //PROBLEM 2
     const vector<vector<int>> INPUT6 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
-<<<<<<< HEAD
-    const vector<vector<int>> INPUT7 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
-    const vector<vector<int>> INPUT8
-
-// TASK 4
-
-
-=======
     const vector<vector<int>> INPUT7 = {{0,5,-11,-61},{-41,-88,-24,-65},{53,-18,29,-37},{-38,52,0,5}};
     const vector<vector<int>> INPUT8 = {{-1,-1,-1,-1},{0,0,0,0},{-1,-1,-1,-1},{0,0,0,0}};
->>>>>>> b40e50c4ec8e34f6331fe2ae9086ca96d2b1e7c4
 
 
 //TASK4
-    auto output_6 = bruteForce2D(4,4,INPUT6);
-    auto output_7 = bruteForce2D(4,4,INPUT7);
-    auto output_8 = bruteForce2D(4,4,INPUT8);
+    auto output_6 = bruteForce2D(INPUT6,4,4);
+    auto output_7 = bruteForce2D(INPUT7,4,4);
+    auto output_8 = bruteForce2D(INPUT8,4,4);
     assert(output_6[0]==1);
     assert(output_6[1]==1);
     assert(output_6[2]==3);
@@ -400,24 +382,25 @@ int main() {
 
 
 ////TASK5
-//    output_6 = maxSubRect(4,4,INPUT6);
-//    output_7 = maxSubRect(4,4,INPUT7);
-//    output_8 = maxSubRect(4,4,INPUT8);
-//    assert(output_6[0]==1);
-//    assert(output_6[1]==1);
-//    assert(output_6[2]==3);
-//    assert(output_6[3]==1);
-//    assert(output_6[4]==47);
-//    assert(output_7[0]==3);
-//    assert(output_7[1]==1);
-//    assert(output_7[2]==4);
-//    assert(output_7[3]==3);
-//    assert(output_7[4]==78);
-//    assert(output_8[0]==2);
-//    assert(output_8[1]==1);
-//    assert(output_8[2]==2);
-//    assert(output_8[3]==1);
-//    assert(output_8[4]==0);
+    output_6 = maxSubRect(INPUT6,4,4);
+    output_7 = maxSubRect(INPUT7,4,4);
+    output_8 = maxSubRect(INPUT8,4,4);
+    cout<<output_6[0]<<endl;
+    assert(output_6[0]==1);
+    assert(output_6[1]==1);
+    assert(output_6[2]==3);
+    assert(output_6[3]==1);
+    assert(output_6[4]==47);
+    assert(output_7[0]==3);
+    assert(output_7[1]==1);
+    assert(output_7[2]==4);
+    assert(output_7[3]==3);
+    assert(output_7[4]==78);
+    assert(output_8[0]==2);
+    assert(output_8[1]==1);
+    assert(output_8[2]==2);
+    assert(output_8[3]==1);
+    assert(output_8[4]==0);
 //
 //
 ////TASK6
