@@ -1,10 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <limits>
-#include <cstdlib>
-#include <cmath>
 #include <cassert>
+#include <random>
 #include <chrono>
 #include <fstream>
 using namespace std;
@@ -15,7 +13,7 @@ enum Algo { task1, task2, task3_a, task3_b, task4, task5, task6};
 // LET i be the beginning of the maximum contiguous subarray
 // LET j be the end of the maximum contiguous subarray
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
-vector<long  int> bruteForce(const vector<int> input){
+vector<long  int> bruteForce(const vector<int> &input){
     int sum;
     int maxSum=input[0];
     int start=0;
@@ -41,11 +39,12 @@ vector<long  int> bruteForce(const vector<int> input){
 }
 
 // DP CONTIGUOUS SUBARRAY 1D (square)
-vector<long int> maxContSubArr(const vector<int> input){
+vector<long int> maxContSubArr(const vector<int> &input){
     vector<long int> output;
     vector<vector<int>> map;
     for(int i=0; i<input.size(); i++){
         vector<int> v;
+        v.reserve(input.size());
         for(int j=0; j<input.size(); j++){
             v.push_back(0);
         }
@@ -75,7 +74,7 @@ vector<long int> maxContSubArr(const vector<int> input){
 
 
 // Part A TOD DOWN
-int betterMaxContSubArr_A(const vector<int> input, int end, vector<int> &mem){
+int betterMaxContSubArr_A(const vector<int> &input, int end, vector<int> &mem){
     if(end==0){
         return input[0];
     }
@@ -89,11 +88,12 @@ int betterMaxContSubArr_A(const vector<int> input, int end, vector<int> &mem){
 }
 
 //Part A driver
-vector<long int> betterMaxContSubArr_A(const vector<int> input){
+vector<long int> betterMaxContSubArr_A(const vector<int> &input){
     vector<int> mem;
     vector<long int> output;
     int end, start, backTrack;
     int max_sum = INT_MIN;
+    mem.reserve(input.size());
     for(int i=0; i<input.size(); i++){
         mem.push_back(INT_MIN);
     }
@@ -121,11 +121,12 @@ vector<long int> betterMaxContSubArr_A(const vector<int> input){
 }
 
 //BOTTOM UP APPROACH
-vector<long int> betterMaxContSubArr_B(const vector<int> input){
+vector<long int> betterMaxContSubArr_B(const vector<int> &input){
     vector<int> sums;
     vector<long int> output;
     int start, end, backTrack;
     int max_sum = INT_MIN;
+    sums.reserve(input.size());
     for(int i=0; i<input.size(); i++){
         sums.push_back(0);
     }
@@ -155,7 +156,7 @@ vector<long int> betterMaxContSubArr_B(const vector<int> input){
 }
 
 
-vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
+vector<long int> bruteForce2D(const vector<vector<int>> &input, int m, int n){
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
     vector<long int> output;
@@ -188,7 +189,7 @@ vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
     return output;
 }
 
-vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
+vector<long int> maxSubRect(const vector<vector<int>> &input, int m, int n){
     int max_sum = INT_MIN;
     int sum;
     int x1,y1,x2,y2;
@@ -230,11 +231,12 @@ vector<long int> maxSubRect(vector<vector<int>> input, int m, int n){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
-vector<long int> betterMaxSubRect(vector<vector<int>> input, int m, int n){
+vector<long int> betterMaxSubRect(const vector<vector<int>> &input, int m, int n){
     int max_sum = INT_MIN;
     vector<long int> output;
     vector<int> rowSums;
     int x1,y1,x2,y2;
+    rowSums.reserve(m);
     for(int i=0; i<m; i++){
         rowSums.push_back(0);
     }
@@ -269,30 +271,105 @@ vector<long int> betterMaxSubRect(vector<vector<int>> input, int m, int n){
 
 
 void experiment(Algo algo){
-    auto start = chrono::high_resolution_clock::now();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> distr(-32768, 32768);
+
+
     ofstream outfile;
     switch(algo){
         case task1:
-            //TODO
-            outfile.open("../task1.csv", ios_base::app);
+            outfile.open("../task1.csv");
+            for(int size=100; size<=10000; size=size+100){
+                cout<<size<<endl;
+                vector<int> testInput;
+                testInput.reserve(size);
+                for(int i=0; i<size; i++){
+                    testInput.push_back(distr(gen));
+                }
+                auto start = chrono::high_resolution_clock::now();
+                auto output = bruteForce(testInput);
+                auto stop = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                outfile<<size<<','<<duration.count()<<endl;
+            }
+            outfile.close();
             break;
         case task2:
-            //TODO
+            outfile.open("../task2.csv");
+            for(int size=100; size<=10000; size=size+100){
+                cout<<size<<endl;
+                vector<int> testInput;
+                testInput.reserve(size);
+                for(int i=0; i<size; i++){
+                    testInput.push_back(distr(gen));
+                }
+                auto start = chrono::high_resolution_clock::now();
+                auto output = maxContSubArr(testInput);
+                auto stop = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                outfile<<size<<','<<duration.count()<<endl;
+            }
+            outfile.close();
             break;
         case task3_a:
-            //TODO
+            outfile.open("../task3a.csv");
+            for(int size=100; size<=10000; size=size+100){
+                cout<<size<<endl;
+                vector<int> testInput;
+                testInput.reserve(size);
+                for(int i=0; i<size; i++){
+                    testInput.push_back(distr(gen));
+                }
+                auto start = chrono::high_resolution_clock::now();
+                auto output = betterMaxContSubArr_A(testInput);
+                auto stop = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                outfile<<size<<','<<duration.count()<<endl;
+            }
+            outfile.close();
             break;
         case task3_b:
+            outfile.open("../task3b.csv");
+            for(int size=100; size<=10000; size=size+100){
+                cout<<size<<endl;
+                vector<int> testInput;
+                testInput.reserve(size);
+                for(int i=0; i<size; i++){
+                    testInput[i]=distr(gen);
+                }
+                auto start = chrono::high_resolution_clock::now();
+                auto output = betterMaxContSubArr_A(testInput);
+                auto stop = chrono::high_resolution_clock::now();
+                auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                outfile<<size<<','<<duration.count()<<endl;
+            }
+            outfile.close();
+            break;
+        case task4:
+            outfile.open("../task4.csv");
+            for(int m=10; m<=500; m=m+10){
+                cout<<m<<endl;
+                for(int n=10; n<=500; n=n+10){
+                    vector<vector<int>> testInput(m,vector<int>(n,0));
+                    for(int i=0; i<m; i++){
+                        for(int j=0; j<n; j++){
+                            testInput[i][j]=distr(gen);
+                        }
+                    }
+                    auto start = chrono::high_resolution_clock::now();
+                    auto output = bruteForce2D(testInput,m,n);
+                    auto stop = chrono::high_resolution_clock::now();
+                    auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
+                    outfile<<m*n<<','<<duration.count()<<endl;
+                }
+            }
             break;
         case task5:
             break;
         case task6:
             break;
     }
-    auto stop = chrono::high_resolution_clock::now();
-    auto duration = duration_cast<chrono::microseconds>(stop - start);
-    outfile<<1<<','<<duration.count()<<endl;
-    outfile.close();
 }
 
 int main() {
