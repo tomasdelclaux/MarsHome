@@ -153,7 +153,7 @@ vector<long int> betterMaxContSubArr_B(const vector<int> input){
 
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
-vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
+vector<int> bruteForce2D(int m, int n,vector<vector<int>> input){
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
     vector<int> output;
@@ -187,10 +187,10 @@ vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
-vector<vector<int>> maxSubRect(vector<vector<int>> input){}
+vector<int> maxSubRect(int m, int n,vector<vector<int>> input){}
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
-vector<vector<int>> betterMaxSubRect(vector<vector<int>> input){}
+vector<int> betterMaxSubRect(int m, int n,vector<vector<int>> input){}
 
 
 int main() {
@@ -316,11 +316,71 @@ int main() {
     assert(output_5[2]==-3);
 
 
-// TASK 4
-//    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
-//    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
-//    vector<int> output = bruteForce2D(INPUT4,4,4);
-//    assert(out)
-//    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
+//PROBLEM 2
+    const vector<vector<int>> INPUT6 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
+    const vector<vector<int>> INPUT7 = {{0,5,-11,-61},{-41,-88,-24,-65},{53,-18,29,-37},{-38,52,0,5}};
+    const vector<vector<int>> INPUT8 = {{-1,-1,-1,-1},{0,0,0,0},{-1,-1,-1,-1},{0,0,0,0}};
 
+
+//TASK4
+    auto output_6 = bruteForce2D(4,4,INPUT6);
+    auto output_7 = bruteForce2D(4,4,INPUT7);
+    auto output_8 = bruteForce2D(4,4,INPUT8);
+    assert(output_6[0]==1);
+    assert(output_6[1]==1);
+    assert(output_6[2]==3);
+    assert(output_6[3]==1);
+    assert(output_6[4]==47);
+    assert(output_7[0]==3);
+    assert(output_7[1]==1);
+    assert(output_7[2]==4);
+    assert(output_7[3]==3);
+    assert(output_7[4]==78);
+    assert(output_8[0]==2);
+    assert(output_8[1]==1);
+    assert(output_8[2]==2);
+    assert(output_8[3]==1);
+    assert(output_8[4]==0);
+
+
+////TASK5
+//    output_6 = maxSubRect(4,4,INPUT6);
+//    output_7 = maxSubRect(4,4,INPUT7);
+//    output_8 = maxSubRect(4,4,INPUT8);
+//    assert(output_6[0]==1);
+//    assert(output_6[1]==1);
+//    assert(output_6[2]==3);
+//    assert(output_6[3]==1);
+//    assert(output_6[4]==47);
+//    assert(output_7[0]==3);
+//    assert(output_7[1]==1);
+//    assert(output_7[2]==4);
+//    assert(output_7[3]==3);
+//    assert(output_7[4]==78);
+//    assert(output_8[0]==2);
+//    assert(output_8[1]==1);
+//    assert(output_8[2]==2);
+//    assert(output_8[3]==1);
+//    assert(output_8[4]==0);
+//
+//
+////TASK6
+//    output_6 = betterMaxSubRect(4,4,INPUT6);
+//    output_7 = betterMaxSubRect(4,4,INPUT7);
+//    output_8 = betterMaxSubRect(4,4,INPUT8);
+//    assert(output_6[0]==1);
+//    assert(output_6[1]==1);
+//    assert(output_6[2]==3);
+//    assert(output_6[3]==1);
+//    assert(output_6[4]==47);
+//    assert(output_7[0]==3);
+//    assert(output_7[1]==1);
+//    assert(output_7[2]==4);
+//    assert(output_7[3]==3);
+//    assert(output_7[4]==78);
+//    assert(output_8[0]==2);
+//    assert(output_8[1]==1);
+//    assert(output_8[2]==2);
+//    assert(output_8[3]==1);
+//    assert(output_8[4]==0);
 }
