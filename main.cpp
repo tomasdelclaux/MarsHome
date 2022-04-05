@@ -153,10 +153,10 @@ vector<long int> betterMaxContSubArr_B(const vector<int> input){
 
 
 // TODO BRUTE FORCE CONTIGUOUS SUBARRAY 2D
-vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
+vector<long int> bruteForce2D(vector<vector<int>> input, int m, int n){
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
-    vector<int> output;
+    vector<long int> output;
     for (int i = 0; i < m; i++){
         for(int j = 0; j < n; j++){
             for(int x = 0; x <= i; x++){
@@ -187,7 +187,53 @@ vector<int> bruteForce2D(vector<vector<int>> input, int m, int n){
 }
 
 // TODO DP CONTIGUOUS SUBARRAY 2D (pow 4)
-vector<vector<int>> maxSubRect(vector<vector<int>> input){}
+vector<long int> maxSubRect(vector<vector<int>> input){
+    int max_sum = INT_MIN;
+    int sum;
+    int m = input.size();
+    int n = input[0].size();
+    int x1,y1,x2,y2;
+    vector<long int> output;
+    vector<vector<int>> map;
+    //INITIALIZE A VECTOR WITH ZEROES FROM 0-M and 0-N
+    for(int i=0; i<=m; i++){
+        vector<int> v;
+        for(int j=0; j<=n; j++){
+            v.push_back(0);
+        }
+        map.push_back(v);
+    }
+    //CALCULATE THE MAX SUMS OF ALL ELEMENTS ENDING IN ROW I AND COLUMN J
+    for(int i=1; i<=m; i++){
+        for(int j=1; j<=n; j++){
+            map[i][j]=map[i-1][j]+map[i][j-1]-map[i-1][j-1]+input[i][j];
+        }
+    }
+
+    for(int rs=0; rs<=m; rs++){
+        for(int re=rs; rs<=m; re++){
+            for(int cs=0; cs<=n; cs++){
+                for(int ce=cs; cs<=n; ce++){
+                    sum = map[re][ce]-map[rs-1][ce]-map[re][cs-1]+map[rs-1][cs-1];
+
+                    if(sum>max_sum){
+                        max_sum= sum;
+                        x1 = rs + 1;
+                        y1 = cs + 1;
+                        x2 = re + 1;
+                        y2 = ce + 1;
+                    }
+                }
+            }
+        }
+    }
+    output.push_back(x1);
+    output.push_back(y1);
+    output.push_back(x2);
+    output.push_back(y2);
+    output.push_back(max_sum);
+    return output;
+}
 
 // TODO DP CONTIGUOUS SUBARRAY 1D (pow 3)
 vector<vector<int>> betterMaxSubRect(vector<vector<int>> input){}
@@ -316,11 +362,13 @@ int main() {
     assert(output_5[2]==-3);
 
 
+//PROBLEM 2
+    const vector<vector<int>> INPUT6 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
+    const vector<vector<int>> INPUT7 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
+    const vector<vector<int>> INPUT8
+
 // TASK 4
-//    const vector<vector<int>> INPUT4 = {{21,3,-17,-14},{15,-14,-31,-28},{11,-21,24,-6},{-2,23,-23,23}};
-//    const vector<vector<int>> INPUT5 = {{1,2,-1,-1},{1,3,-1,-1},{-1,-1,-1,-1},{-1,-1,-1,-1}};
-//    vector<int> output = bruteForce2D(INPUT4,4,4);
-//    assert(out)
-//    cout << output[0] << " " << output[1] << " " << output[2] << " " << output[3] << " " << output[4];
+
+
 
 }
