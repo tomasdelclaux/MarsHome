@@ -2,7 +2,7 @@ all: marsBase
 
 marsBase:
 	echo "compiling marsBase"
-	g++ -std=c++17 main.cpp -o marsBase
+	g++ -std=c++17 main.cpp -o MarsBase
 
 clean:
-	rm -f ./marsBase
+	rm -f ./MarsBase
