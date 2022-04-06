@@ -8,9 +8,10 @@
 #include <fstream>
 using namespace std;
 
+//enum class used in the experiment function to produce the data points for experimental analysis
 enum Algo { task1, task2, task3_a, task3_b, task4, task5, task6};
 
-// BRUTE FORCE CONTIGUOUS SUBARRAY 1D
+// BRUTE FORCE CONTIGUOUS SUBARRAY 1D TASK 1
 // LET i be the beginning of the maximum contiguous subarray
 // LET j be the end of the maximum contiguous subarray
 // Need to go through all the combinations of subarrays(i,j), where i>=0 and i<n, and j>=i and j<n.
@@ -39,10 +40,12 @@ vector<long  int> bruteForce(const vector<int> &input){
     return res;
 }
 
-// DP CONTIGUOUS SUBARRAY 1D (square)
+// DP CONTIGUOUS SUBARRAY 1D (square) - TASK 2
 vector<long int> maxContSubArr(const vector<int> &input){
     vector<long int> output;
     vector<vector<int>> map;
+
+    //Initialization of auxiliary array map
     for(int i=0; i<input.size(); i++){
         vector<int> v;
         v.reserve(input.size());
@@ -54,6 +57,8 @@ vector<long int> maxContSubArr(const vector<int> &input){
     for(int i=0; i<input.size(); i++){
         map[i][i]=input[i];
     }
+
+    //Dynamic Programming
     int curr_max = input[0];
     int start=0;
     int end=0;
@@ -74,38 +79,51 @@ vector<long int> maxContSubArr(const vector<int> &input){
 }
 
 
-// Part A TOD DOWN
+// Part A TOP DOWN
 int betterMaxContSubArr_A(const vector<int> &input, int end, vector<int> &mem){
+    //Base case
     if(end==0){
         return input[0];
     }
+    //Memoization hit
     if(mem[end]>INT_MIN){
         return mem[end];
     }
+    //Recurrence
     else{
         mem[end]= max(input[end], betterMaxContSubArr_A(input, end-1, mem)+input[end]);
         return mem[end];
     }
 }
 
-//Part A driver
+//Part A driver function of the top down 3A
 vector<long int> betterMaxContSubArr_A(const vector<int> &input){
     vector<int> mem;
     vector<long int> output;
     int end, start, backTrack;
     int max_sum = INT_MIN;
+
+    //INITIALIZATION
     mem.reserve(input.size());
     for(int i=0; i<input.size(); i++){
         mem.push_back(INT_MIN);
     }
+
+    //BASE case
     mem[0]= input[0];
+
+    //mem is passed by reference
     auto dummy = betterMaxContSubArr_A(input, input.size()-1, mem);
+
+    //Find max sum from mem
     for(int i=0; i<mem.size(); i++){
         if(mem[i]>=max_sum){
             end = i;
             max_sum=mem[i];
         }
     }
+
+    //Backtrack to find starting index
     backTrack = max_sum;
     start = end;
     while(true){
@@ -121,26 +139,35 @@ vector<long int> betterMaxContSubArr_A(const vector<int> &input){
     return output;
 }
 
-//BOTTOM UP APPROACH
+//BOTTOM UP APPROACH 3B
 vector<long int> betterMaxContSubArr_B(const vector<int> &input){
     vector<int> sums;
     vector<long int> output;
     int start, end, backTrack;
     int max_sum = INT_MIN;
+
+    //Initialization
     sums.reserve(input.size());
     for(int i=0; i<input.size(); i++){
         sums.push_back(0);
     }
+
+    //Base case
     sums[0]=input[0];
+
+    //Find max sum
     for(int i=1; i<input.size(); i++){
         sums[i] = max(sums[i-1]+input[i], input[i]);
     }
+
     for(int i=0; i<input.size(); i++){
         if(sums[i]>=max_sum){
             end = i;
             max_sum =sums[i];
         }
     }
+
+    //backtrack to find start
     backTrack = max_sum;
     start = end;
     while(true){
@@ -157,6 +184,7 @@ vector<long int> betterMaxContSubArr_B(const vector<int> &input){
 }
 
 
+//BRUTE FORCE 2D TASK 4
 vector<long int> bruteForce2D(const vector<vector<int>> &input, int m, int n){
     int m_sum = INT_MIN;
     int x1,y1,x2,y2;
@@ -190,6 +218,8 @@ vector<long int> bruteForce2D(const vector<vector<int>> &input, int m, int n){
     return output;
 }
 
+
+//TASK 5
 vector<long int> maxSubRect(const vector<vector<int>> &input, int m, int n){
     int max_sum = INT_MIN;
     int sum;
@@ -205,6 +235,7 @@ vector<long int> maxSubRect(const vector<vector<int>> &input, int m, int n){
         }
     }
 
+    //Go through all possibilities of starting/ending row/column
     for(int rs=1; rs<=m; rs++){
         for(int re=rs; re<=m; re++){
             for(int cs=1; cs<=n; cs++){
@@ -231,13 +262,15 @@ vector<long int> maxSubRect(const vector<vector<int>> &input, int m, int n){
     return output;
 }
 
-// TODO DP CONTIGUOUS SUBARRAY 2D (pow 3)
+// TASK 6
 vector<long int> betterMaxSubRect(const vector<vector<int>> &input, int m, int n){
     int max_sum = INT_MIN;
     vector<long int> output;
     vector<int> rowSums;
     int x1,y1,x2,y2;
     rowSums.reserve(m);
+
+    //Temporary array - can update it each time to reduce space to O(m) from O(mn)
     for(int i=0; i<m; i++){
         rowSums.push_back(0);
     }
@@ -245,11 +278,13 @@ vector<long int> betterMaxSubRect(const vector<vector<int>> &input, int m, int n
         for(int i=0; i<m; i++){
             rowSums[i]=0;
         }
+        //Calculate sums of each row
         for(int ce=cs; ce<n; ce++){
             for(int i=0; i<m; i++){
                 rowSums[i]=rowSums[i]+input[i][ce];
             }
 
+            //CALL to algo 3
             auto output = betterMaxContSubArr_B(rowSums);
 
             if(output[2]>max_sum){
@@ -271,6 +306,7 @@ vector<long int> betterMaxSubRect(const vector<vector<int>> &input, int m, int n
 }
 
 
+//Function to get the data to plot the graphs.
 void experiment(Algo algo){
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -541,6 +577,7 @@ int main(int argc, char** argv) {
     }
 }
 
+//TEST CASES COMMENTED OUT.
 
 ////PROBLEM 1
 //    const vector<int> INPUT1 = {-1,-1, -1, -1, -1};
